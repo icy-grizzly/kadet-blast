@@ -47,29 +47,29 @@
             bottom: 110px;
             left: 50%;
             transform: translateX(-50%);
-            width: 80%;
-            max-width: 500px;
-            background: rgba(0, 20, 0, 0.85);
-            border: 2px solid #00ff00;
-            padding: 12px;
+            width: 85%;
+            max-width: 480px;
+            background: rgba(0, 15, 0, 0.92);
+            border: 3px solid #00ff00;
+            padding: 10px 14px;
             display: none;
-            z-index: 80;
-            box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+            z-index: 85;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.4);
         }
 
         .pilot-name-box {
             color: #00ff00;
             font-size: 8px;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             text-decoration: underline;
             text-transform: uppercase;
         }
 
         .dialog-text {
             color: #ffffff;
-            font-size: 10px;
+            font-size: 9px;
             line-height: 1.4;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
         }
 
         #game-over, #wave-notify, #pause-screen, #mobile-controls {
@@ -88,7 +88,7 @@
             background: #ef4444;
             color: #fff;
             border-bottom: 6px solid #b91c1c;
-            padding: 15px;
+            padding: 14px;
             text-transform: uppercase;
             cursor: pointer;
         }
@@ -101,9 +101,9 @@
             background: #1e293b;
             border: 3px solid #38bdf8;
             color: #38bdf8;
-            padding: 12px;
+            padding: 10px;
             text-transform: uppercase;
-            font-size: 10px;
+            font-size: 9px;
             cursor: pointer;
             transition: all 0.2s;
         }
@@ -117,15 +117,38 @@
         .stats-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            gap: 12px;
             text-align: left;
             font-size: 8px;
-            margin: 20px 0;
+            margin: 16px 0;
             text-transform: uppercase;
             color: #94a3b8;
         }
 
-        /* Mobile Touch UI Controls */
+        /* Dual Circle Pad Touch UI Controls */
+        .joy-container {
+            width: 110px;
+            height: 110px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 2px solid rgba(255, 255, 255, 0.35);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            bottom: 20px;
+            pointer-events: auto;
+        }
+
+        .joy-knob {
+            width: 44px;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.35);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
         .touch-btn {
             background: rgba(255, 255, 255, 0.15);
             border: 2px solid rgba(255, 255, 255, 0.4);
@@ -133,10 +156,11 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 10px;
+            font-size: 8px;
             font-weight: bold;
             color: #fff;
             touch-action: none;
+            pointer-events: auto;
         }
         .touch-btn:active {
             background: rgba(239, 68, 68, 0.6);
@@ -148,13 +172,13 @@
     <div class="crt-overlay"></div>
 
     <!-- HUD -->
-    <div id="hud" class="fixed top-6 left-6 right-6 flex justify-between items-start pointer-events-none z-10">
-        <div class="space-y-3">
+    <div id="hud" class="fixed top-4 left-4 right-4 flex justify-between items-start pointer-events-none z-20">
+        <div class="space-y-2">
             <div class="hud-text">PILOT: <span class="text-white">KADET LANCER</span></div>
 
             <div class="flex items-center gap-2">
                 <div class="hud-text text-[8px]">HP</div>
-                <div class="w-32 h-3 bg-gray-900 border border-white p-[1px]">
+                <div class="w-28 h-3 bg-gray-900 border border-white p-[1px]">
                     <div id="health-bar" class="h-full bg-green-500 transition-all duration-300" style="width: 100%"></div>
                 </div>
             </div>
@@ -164,8 +188,8 @@
         </div>
 
         <div class="text-center">
-            <div id="wave-counter" class="text-white text-lg mb-2">STAGE 01</div>
-            <div class="w-40 h-3 bg-gray-900 border-2 border-white">
+            <div id="wave-counter" class="text-white text-base mb-1">STAGE 01</div>
+            <div class="w-36 h-3 bg-gray-900 border-2 border-white">
                 <div id="kill-bar" class="h-full bg-red-500 transition-all duration-300" style="width: 0%"></div>
             </div>
             <div id="target-info" class="text-[7px] mt-1 text-gray-400 uppercase">Eliminate Target Data</div>
@@ -178,20 +202,23 @@
         </div>
     </div>
 
-    <!-- Mobile Touch Overlay Controls -->
+    <!-- Mobile Dual Circle Pad Touch Overlay -->
     <div id="mobile-controls" class="fixed inset-0 pointer-events-none z-30">
-        <!-- Move Virtual Joystick Base -->
-        <div id="joy-base" class="absolute bottom-6 left-6 w-32 h-32 bg-white/10 border-2 border-white/30 rounded-full pointer-events-auto flex items-center justify-center">
-            <div id="joy-stick" class="w-12 h-12 bg-white/40 border border-white rounded-full"></div>
+        <!-- Left Move Circle Pad -->
+        <div id="joy-move-base" class="joy-container left-6">
+            <div id="joy-move-knob" class="joy-knob"></div>
         </div>
 
-        <!-- Action Buttons (Right Side) -->
-        <div class="absolute bottom-6 right-6 flex flex-col gap-3 items-end pointer-events-auto">
-            <div class="flex gap-3">
-                <button id="btn-touch-bomb" class="touch-btn w-14 h-14 bg-red-600/40 border-red-400">BOMB<br>[G]</button>
-                <button id="btn-touch-jonny" class="touch-btn w-14 h-14 bg-cyan-600/40 border-cyan-400">JONNY<br>[E]</button>
-            </div>
-            <button id="btn-gyro-toggle" class="touch-btn w-30 px-3 h-8 rounded-lg text-[7px] bg-slate-800/80 border-slate-400">GYRO AIM: OFF</button>
+        <!-- Right Aim/Shoot Circle Pad -->
+        <div id="joy-shoot-base" class="joy-container right-6 border-red-400/50">
+            <div id="joy-shoot-knob" class="joy-knob border-red-300 bg-red-500/30"></div>
+        </div>
+
+        <!-- Action Buttons (Center Right) -->
+        <div class="absolute bottom-32 right-6 flex flex-col gap-2 items-end">
+            <button id="btn-touch-bomb" class="touch-btn w-12 h-12 bg-red-600/40 border-red-400">BOMB<br>[G]</button>
+            <button id="btn-touch-jonny" class="touch-btn w-12 h-12 bg-cyan-600/40 border-cyan-400">JONNY<br>[E]</button>
+            <button id="btn-gyro-toggle" class="touch-btn w-28 px-2 h-7 rounded-lg text-[6px] bg-slate-800/80 border-slate-400">GYRO AIM: OFF</button>
         </div>
     </div>
 
@@ -203,43 +230,43 @@
 
     <!-- Wave Notification -->
     <div id="wave-notify" class="fixed inset-0 flex items-center justify-center pointer-events-none z-40">
-        <div class="text-center bg-black border-4 border-white px-8 py-4">
-            <h2 id="wave-text" class="text-4xl text-white italic flicker-anim uppercase mb-2">stage 01</h2>
+        <div class="text-center bg-black/90 border-4 border-white px-8 py-4">
+            <h2 id="wave-text" class="text-3xl text-white italic flicker-anim uppercase mb-2">stage 01</h2>
         </div>
     </div>
 
-    <!-- Screens -->
+    <!-- Overlay Screens -->
     <div id="overlay" class="fixed inset-0 flex items-center justify-center bg-black z-50">
-        <div id="start-screen" class="text-center max-w-lg p-6 border-8 border-double border-white bg-black">
-            <h1 class="text-4xl mb-4 leading-tight tracking-tighter text-white uppercase">Kadet<br><span class="text-red-500">Blast</span></h1>
+        <div id="start-screen" class="text-center max-w-md p-6 border-8 border-double border-white bg-black">
+            <h1 class="text-3xl mb-4 leading-tight tracking-tighter text-white uppercase">Kadet<br><span class="text-red-500">Blast</span></h1>
 
             <!-- Platform Mode Selector -->
-            <div class="mb-6">
-                <div class="text-[9px] text-yellow-400 mb-2 uppercase">Select Platform Mode:</div>
+            <div class="mb-4">
+                <div class="text-[8px] text-yellow-400 mb-2 uppercase">Select Control Mode:</div>
                 <div class="grid grid-cols-2 gap-3">
                     <button id="mode-pc-btn" class="btn-mode active">PC MODE</button>
                     <button id="mode-mobile-btn" class="btn-mode">MOBILE MODE</button>
                 </div>
             </div>
 
-            <div id="control-info-box" class="text-[8px] text-gray-400 mb-6 leading-loose text-left px-2 uppercase border border-gray-800 p-3">
+            <div id="control-info-box" class="text-[7px] text-gray-400 mb-6 leading-relaxed text-left border border-gray-800 p-3 uppercase">
                 [PC CONTROLS]<br>
-                - WASD: PILOT SHIP<br>
+                - WASD: MOVE SHIP<br>
                 - MOUSE: AIM & FIRE<br>
                 - [G]: DEPLOY BOMB (LVL 6)<br>
                 - [E]: CALL JONNNY (LVL 7)<br>
                 - [ESC]: PAUSE GAME
             </div>
 
-            <button id="start-btn" class="btn-retro w-full text-lg font-bold">
+            <button id="start-btn" class="btn-retro w-full text-base font-bold">
                 INITIATE MISSION
             </button>
         </div>
 
-        <div id="pause-screen" class="text-center p-8 border-8 border-yellow-500 bg-black min-w-[320px]">
-            <h2 class="text-2xl mb-2 text-yellow-500 uppercase italic flicker-anim">Mission Suspended</h2>
-            <div class="border-y border-yellow-900/50 my-4 py-2">
-                <div class="text-[10px] text-yellow-600 mb-4 tracking-widest">MISSION STATUS REPORT</div>
+        <div id="pause-screen" class="text-center p-6 border-8 border-yellow-500 bg-black min-w-[300px]">
+            <h2 class="text-xl mb-2 text-yellow-500 uppercase italic flicker-anim">Mission Suspended</h2>
+            <div class="border-y border-yellow-900/50 my-3 py-2">
+                <div class="text-[9px] text-yellow-600 mb-3 tracking-widest">MISSION STATUS REPORT</div>
                 <div class="stats-grid">
                     <div>STAGE:</div><div id="stat-stage" class="text-white">01</div>
                     <div>TOTAL KILLS:</div><div id="stat-kills" class="text-white">0</div>
@@ -247,25 +274,25 @@
                     <div>GIFT STATUS:</div><div id="stat-gift" class="text-white">LOCKED</div>
                 </div>
             </div>
-            <button id="resume-btn" class="btn-retro w-full text-xl bg-yellow-600 border-yellow-800">
+            <button id="resume-btn" class="btn-retro w-full text-lg bg-yellow-600 border-yellow-800">
                 RESUME
             </button>
         </div>
 
-        <div id="game-over" class="text-center p-8 border-8 border-red-600 bg-black">
-            <h2 class="text-4xl mb-4 text-red-600 uppercase">Mission Failed</h2>
-            <div class="space-y-4 mb-10">
-                <div class="text-sm uppercase">Score: <span id="final-score" class="text-white">0</span></div>
+        <div id="game-over" class="text-center p-6 border-8 border-red-600 bg-black">
+            <h2 class="text-3xl mb-4 text-red-600 uppercase">Mission Failed</h2>
+            <div class="space-y-4 mb-8">
+                <div class="text-xs uppercase">Score: <span id="final-score" class="text-white">0</span></div>
             </div>
-            <button id="restart-btn" class="btn-retro w-full text-xl">RE-DEPLOY</button>
+            <button id="restart-btn" class="btn-retro w-full text-lg">RE-DEPLOY</button>
         </div>
     </div>
 
     <canvas id="gameCanvas"></canvas>
 
     <script>
-        // Mode & Control Configuration
-        let selectedMode = 'pc'; // 'pc' or 'mobile'
+        // Mode & Control State
+        let selectedMode = 'pc';
         let gyroEnabled = false;
         let gyroAngleOffset = 0;
 
@@ -296,7 +323,6 @@
                 playExplode: () => playSound(80, 'sawtooth', 0.2, 0.05),
                 playMissile: () => playSound(120, 'sawtooth', 0.4, 0.04),
                 playMothership: () => playSound(40, 'square', 2.0, 0.25),
-                playSwitch: () => playSound(700, 'sine', 0.04, 0.08),
                 playHit: () => playSound(150, 'square', 0.1, 0.1),
                 playImpact: () => playSound(100, 'sawtooth', 0.15, 0.08),
                 playPower: () => {
@@ -351,8 +377,14 @@
             "Triple Blaster array active. HQ, thanks for the juice!",
             "Wide Cannon tech integrated.",
             "Predator Missiles tracking.",
-            "Heavy Ordnance ready. Press [G] or BOMB to Drop!",
-            "HQ: Deployment of CODENAME: JONNNY authorized!"
+            "Heavy Ordnance ready. Drop bombs!",
+            "HQ: CODENAME JONNNY authorized!"
+        ];
+
+        const JONNNY_REPEAT_QUOTES = [
+            "Take it easy, Lancer! I'm sweeping the orbit as fast as I can!",
+            "Whoa, easy on the callouts, Lancer! Energy grids take time to recharge!",
+            "Lancer, take it easy! Give my orbital engines a breather!"
         ];
 
         const scale = 4;
@@ -361,11 +393,14 @@
         let keys = {}, mouse = { x: 0, y: 0, down: false }, enemySpawnTimer = 0;
         let wave = 1, killsInWave = 0, totalKills = 0, framesActive = 0;
         let screenShake = 0, mothershipFlash = 0, radioTimeout, activeMothership = null;
-        let doublePointsGift = false;
+        let doublePointsGift = false, powerUpSpawnTimer = 0;
+        let jonnnyActivationCount = 0;
 
-        // Joystick Input States
-        let joyVector = { x: 0, y: 0 };
-        let touchAiming = false;
+        // Circle Pad State
+        let moveJoyVector = { x: 0, y: 0 };
+        let shootJoyVector = { x: 0, y: 0 };
+        let moveTouchId = null;
+        let shootTouchId = null;
 
         function resize() {
             width = canvas.width = Math.floor(window.innerWidth / scale);
@@ -376,14 +411,13 @@
         window.addEventListener('resize', resize);
         resize();
 
-        // Mode Switching UI
         modePcBtn.addEventListener('click', () => {
             selectedMode = 'pc';
             modePcBtn.classList.add('active');
             modeMobileBtn.classList.remove('active');
             controlInfoBox.innerHTML = `
                 [PC CONTROLS]<br>
-                - WASD: PILOT SHIP<br>
+                - WASD: MOVE SHIP<br>
                 - MOUSE: AIM & FIRE<br>
                 - [G]: DEPLOY BOMB (LVL 6)<br>
                 - [E]: CALL JONNNY (LVL 7)<br>
@@ -397,8 +431,8 @@
             modePcBtn.classList.remove('active');
             controlInfoBox.innerHTML = `
                 [MOBILE CONTROLS]<br>
-                - LEFT JOYSTICK: PILOT SHIP<br>
-                - TOUCH RIGHT AREA: AIM & AUTO-FIRE<br>
+                - LEFT CIRCLE PAD: MOVE SHIP<br>
+                - RIGHT CIRCLE PAD: AIM & AUTO-FIRE<br>
                 - GYRO AIM: OPTIONAL TILT AIMING<br>
                 - ON-SCREEN ACTION BUTTONS
             `;
@@ -426,7 +460,7 @@
             radioText.innerText = `"${msg}"`;
             radioChatter.style.display = 'block';
             AudioEngine.playRadio();
-            radioTimeout = setTimeout(() => { radioChatter.style.display = 'none'; }, 3500);
+            radioTimeout = setTimeout(() => { radioChatter.style.display = 'none'; }, 3800);
         }
 
         class Player {
@@ -444,7 +478,7 @@
                 if (this.invincibilityFrames > 0) return;
                 this.health -= amt;
                 this.invincibilityFrames = 60;
-                screenShake = 15;
+                screenShake = 12;
                 AudioEngine.playHit();
                 updateHUD();
                 if (this.health <= 0) endGame();
@@ -460,14 +494,13 @@
                     if (keys['d']) this.velX += accel;
                     this.angle = Math.atan2((mouse.y/scale) - this.y, (mouse.x/scale) - this.x);
                 } else {
-                    // Mobile Movement Vector
-                    this.velX += joyVector.x * accel;
-                    this.velY += joyVector.y * accel;
+                    this.velX += moveJoyVector.x * accel;
+                    this.velY += moveJoyVector.y * accel;
 
                     if (gyroEnabled) {
                         this.angle = gyroAngleOffset;
-                    } else if (touchAiming) {
-                        this.angle = Math.atan2((mouse.y/scale) - this.y, (mouse.x/scale) - this.x);
+                    } else if (Math.hypot(shootJoyVector.x, shootJoyVector.y) > 0.2) {
+                        this.angle = Math.atan2(shootJoyVector.y, shootJoyVector.x);
                     }
                 }
 
@@ -481,7 +514,9 @@
                 if (this.mothershipCooldown > 0) this.mothershipCooldown--;
                 if (this.invincibilityFrames > 0) this.invincibilityFrames--;
 
-                if (mouse.down && this.shootCooldown <= 0) {
+                const isFiring = selectedMode === 'pc' ? mouse.down : (Math.hypot(shootJoyVector.x, shootJoyVector.y) > 0.2 || mouse.down);
+
+                if (isFiring && this.shootCooldown <= 0) {
                     this.fireWeapon();
                     this.shootCooldown = this.weaponLevel === 4 ? 20 : 12;
                 }
@@ -607,15 +642,12 @@
                 ctx.fillRect(-3, -1.5, 6, 3);
                 ctx.fillStyle = '#ffffff';
                 ctx.fillRect(3, -1.5, 2, 3);
-                ctx.shadowBlur = 4;
-                ctx.shadowColor = this.trackingEnabled ? '#00ffff' : '#ff4400';
                 ctx.restore();
-                ctx.shadowBlur = 0;
             }
             triggerImpact() {
                 AudioEngine.playImpact();
                 screenShake = 4;
-                for(let i=0; i<12; i++) {
+                for(let i=0; i<10; i++) {
                     const p = new Particle(this.x, this.y, '#ffffff', 1.2);
                     p.vx *= 2; p.vy *= 2;
                     particles.push(p);
@@ -627,10 +659,17 @@
         class Mothership {
             constructor() {
                 this.y = -150; this.targetY = 60; this.x = width / 2;
-                this.state = 'entering'; this.timer = 0; this.laserAlpha = 0;
+                this.state = 'entering'; this.timer = 0;
                 this.imgWidth = 140; this.imgHeight = 100;
                 this.beamWidth = 0;
-                showRadioMessage("HQ: CODENAME JONNNY reaching orbit. Prepare for ORBITAL BLAST!", "HQ COMMAND");
+
+                jonnnyActivationCount++;
+                if (jonnnyActivationCount > 1) {
+                    const qIndex = (jonnnyActivationCount - 2) % JONNNY_REPEAT_QUOTES.length;
+                    showRadioMessage(JONNNY_REPEAT_QUOTES[qIndex], "CODENAME: JONNNY");
+                } else {
+                    showRadioMessage("HQ: CODENAME JONNNY reaching orbit. Prepare for ORBITAL BLAST!", "HQ COMMAND");
+                }
             }
             update() {
                 this.timer++;
@@ -727,9 +766,10 @@
         }
 
         class Enemy {
-            constructor(x, y, type) {
+            constructor(x, y, type, speedNerf = false) {
                 this.x = x; this.y = y; this.type = type;
                 this.speed = type === 'stalker' ? 0.7 : 0.45;
+                if (speedNerf) this.speed *= 0.35; // Slow-moving nerfed speed during max power swarm
                 this.color = type === 'stalker' ? '#ff00ff' : '#00ff00';
                 this.damage = type === 'stalker' ? 25 : 15;
                 this.angle = 0;
@@ -745,25 +785,49 @@
                 ctx.translate(this.x, this.y);
                 ctx.rotate(this.angle + Math.PI/2);
                 ctx.fillStyle = this.color;
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 0.5;
 
+                // Evolving multi-polygon shapes by stage progression
                 if (this.type === 'stalker') {
-                    ctx.beginPath();
-                    ctx.moveTo(0, -5); 
-                    ctx.lineTo(4, 0);
-                    ctx.lineTo(0, 5);
-                    ctx.lineTo(-4, 0);
-                    ctx.closePath();
-                    ctx.fill();
-                    ctx.fillStyle = '#ffffff';
-                    ctx.fillRect(-1, -1, 2, 2);
-                } else {
-                    ctx.beginPath();
-                    ctx.moveTo(0, -4);
-                    ctx.lineTo(3, 4);
-                    ctx.lineTo(0, 2);
-                    ctx.lineTo(-3, 4);
-                    ctx.closePath();
-                    ctx.fill();
+                    if (wave < 3) {
+                        ctx.beginPath();
+                        ctx.moveTo(0, -5); ctx.lineTo(4, 0); ctx.lineTo(0, 5); ctx.lineTo(-4, 0);
+                        ctx.closePath(); ctx.fill();
+                    } else if (wave < 6) {
+                        // 6-sided Polygon Stalker
+                        ctx.beginPath();
+                        ctx.moveTo(0, -6); ctx.lineTo(4, -2); ctx.lineTo(4, 4);
+                        ctx.lineTo(0, 6); ctx.lineTo(-4, 4); ctx.lineTo(-4, -2);
+                        ctx.closePath(); ctx.fill(); ctx.stroke();
+                    } else {
+                        // Complex Octagon Stalker
+                        ctx.beginPath();
+                        for (let i = 0; i < 8; i++) {
+                            const a = (i * Math.PI) / 4;
+                            const r = i % 2 === 0 ? 6 : 3;
+                            const px = Math.cos(a) * r; const py = Math.sin(a) * r;
+                            if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+                        }
+                        ctx.closePath(); ctx.fill(); ctx.stroke();
+                    }
+                } else { // Grunt
+                    if (wave < 2) {
+                        ctx.beginPath();
+                        ctx.moveTo(0, -4); ctx.lineTo(3, 4); ctx.lineTo(0, 2); ctx.lineTo(-3, 4);
+                        ctx.closePath(); ctx.fill();
+                    } else if (wave < 5) {
+                        // Pentagon Winged Grunt
+                        ctx.beginPath();
+                        ctx.moveTo(0, -5); ctx.lineTo(5, 1); ctx.lineTo(3, 5); ctx.lineTo(-3, 5); ctx.lineTo(-5, 1);
+                        ctx.closePath(); ctx.fill(); ctx.stroke();
+                    } else {
+                        // Heptagon Elite Grunt
+                        ctx.beginPath();
+                        ctx.moveTo(0, -6); ctx.lineTo(4, -2); ctx.lineTo(6, 3); ctx.lineTo(0, 2);
+                        ctx.lineTo(-6, 3); ctx.lineTo(-4, -2);
+                        ctx.closePath(); ctx.fill(); ctx.stroke();
+                    }
                 }
                 ctx.restore();
             }
@@ -800,21 +864,25 @@
             else if (side === 2) { ex = Math.random() * width; ey = height + 20; }
             else { ex = -20; ey = Math.random() * height; }
 
+            // Max power level swarm modifier (Stage 3+ with weapon level 7 triggers 5x slow-moving spawns)
+            const isMaxSwarm = (player && player.weaponLevel >= 7 && wave >= 3);
+            const swarmMultiplier = isMaxSwarm ? 5 : 1;
+
             const squadRoll = Math.random();
             if (squadRoll < 0.2 && wave >= 3) {
-                enemies.push(new Enemy(ex, ey, 'stalker'));
-                enemies.push(new Enemy(ex + 10, ey + 10, 'stalker'));
+                for (let s = 0; s < swarmMultiplier; s++) {
+                    enemies.push(new Enemy(ex + s * 6, ey + s * 6, 'stalker', isMaxSwarm));
+                }
             } else if (squadRoll < 0.6) {
-                const count = 3 + Math.floor(wave / 2);
+                const count = (3 + Math.floor(wave / 2)) * swarmMultiplier;
                 for(let i=0; i<count; i++) {
-                    const offset = i * 12;
-                    enemies.push(new Enemy(ex + offset, ey + offset, 'grunt'));
-                    if (i > 0) enemies.push(new Enemy(ex - offset, ey + offset, 'grunt'));
+                    const offset = i * 6;
+                    enemies.push(new Enemy(ex + offset, ey + offset, 'grunt', isMaxSwarm));
                 }
             } else {
-                const count = 4 + Math.floor(wave / 3);
+                const count = (4 + Math.floor(wave / 3)) * swarmMultiplier;
                 for(let i=0; i<count; i++) {
-                    enemies.push(new Enemy(ex + Math.random()*30-15, ey + Math.random()*30-15, 'grunt'));
+                    enemies.push(new Enemy(ex + Math.random()*30-15, ey + Math.random()*30-15, 'grunt', isMaxSwarm));
                 }
             }
         }
@@ -823,7 +891,8 @@
             player = new Player(); bullets = []; enemies = []; particles = []; powerUps = []; bombs = []; missiles = [];
             score = 0; multiplier = 1.0; wave = 1; killsInWave = 0; totalKills = 0; framesActive = 0;
             isPaused = false; doublePointsGift = false; doubleIndicator.style.display = 'none';
-            keys = {}; activeMothership = null; joyVector = { x: 0, y: 0 }; touchAiming = false;
+            keys = {}; activeMothership = null; moveJoyVector = { x: 0, y: 0 }; shootJoyVector = { x: 0, y: 0 };
+            powerUpSpawnTimer = 0; jonnnyActivationCount = 0;
 
             if (selectedMode === 'mobile') {
                 mobileControls.style.display = 'block';
@@ -913,6 +982,14 @@
                 doublePointsGift = true; doubleIndicator.style.display = 'inline';
                 showRadioMessage("HQ: Tactical data shows 2:00 mark hit! 2X Multiplier enabled.", "HQ COMMAND");
             }
+
+            // Power-up spawn every 10 seconds (600 frames at 60fps)
+            powerUpSpawnTimer++;
+            if (powerUpSpawnTimer >= 600) {
+                powerUps.push(new PowerUp(Math.random() * (width - 20) + 10, Math.random() * (height - 20) + 10));
+                powerUpSpawnTimer = 0;
+            }
+
             ctx.fillStyle = '#000'; ctx.fillRect(0, 0, width, height);
             if (screenShake > 0) { ctx.translate(Math.random()*2-1, Math.random()*2-1); screenShake--; }
             if (mothershipFlash > 0) { ctx.fillStyle = `rgba(255,255,255,${mothershipFlash*0.1})`; ctx.fillRect(0,0,width,height); mothershipFlash--; }
@@ -924,13 +1001,11 @@
             player.update(); player.draw();
 
             enemySpawnTimer++;
-            const spawnRate = Math.max(80, 200 - wave * 10); 
+            const spawnRate = Math.max(70, 200 - wave * 10); 
             if (enemySpawnTimer > spawnRate) {
                 spawnSquad();
                 enemySpawnTimer = 0;
             }
-
-            if (Math.random() < 0.0008) powerUps.push(new PowerUp(Math.random()*width, Math.random()*height));
 
             for(let i=powerUps.length-1; i>=0; i--) {
                 const p = powerUps[i]; p.update(); p.draw();
@@ -995,7 +1070,7 @@
             requestAnimationFrame(gameLoop);
         }
 
-        // Key Controls
+        // Keyboard Controls
         window.addEventListener('keydown', e => {
             const k = e.key.toLowerCase();
             if (k === 'escape') { e.preventDefault(); togglePause(); }
@@ -1008,64 +1083,14 @@
         window.addEventListener('mousedown', () => { if(!isPaused) mouse.down = true; });
         window.addEventListener('mouseup', () => mouse.down = false);
 
-        // Mobile Touch Joystick Logic
-        const joyBase = document.getElementById('joy-base');
-        const joyStick = document.getElementById('joy-stick');
-        let joyTouchId = null;
+        // Mobile Dual Circle Pad Touch Isolation
+        const moveJoyBase = document.getElementById('joy-move-base');
+        const moveJoyKnob = document.getElementById('joy-move-knob');
+        const shootJoyBase = document.getElementById('joy-shoot-base');
+        const shootJoyKnob = document.getElementById('joy-shoot-knob');
 
-        window.addEventListener('touchstart', e => {
-            if (selectedMode !== 'mobile' || !gameActive || isPaused) return;
-
-            for (let i = 0; i < e.changedTouches.length; i++) {
-                const t = e.changedTouches[i];
-                if (t.clientX < window.innerWidth / 2 && joyTouchId === null) {
-                    joyTouchId = t.identifier;
-                    updateJoystick(t);
-                } else if (t.clientX >= window.innerWidth / 2) {
-                    mouse.x = t.clientX;
-                    mouse.y = t.clientY;
-                    mouse.down = true;
-                    touchAiming = true;
-                }
-            }
-        });
-
-        window.addEventListener('touchmove', e => {
-            if (selectedMode !== 'mobile' || !gameActive || isPaused) return;
-
-            for (let i = 0; i < e.changedTouches.length; i++) {
-                const t = e.changedTouches[i];
-                if (t.identifier === joyTouchId) {
-                    updateJoystick(t);
-                } else if (t.clientX >= window.innerWidth / 2) {
-                    mouse.x = t.clientX;
-                    mouse.y = t.clientY;
-                    touchAiming = true;
-                }
-            }
-        });
-
-        const resetJoy = (id) => {
-            if (id === joyTouchId) {
-                joyTouchId = null;
-                joyVector = { x: 0, y: 0 };
-                joyStick.style.transform = `translate(0px, 0px)`;
-            }
-        };
-
-        window.addEventListener('touchend', e => {
-            for (let i = 0; i < e.changedTouches.length; i++) {
-                const t = e.changedTouches[i];
-                resetJoy(t.identifier);
-                if (t.clientX >= window.innerWidth / 2) {
-                    mouse.down = false;
-                    touchAiming = false;
-                }
-            }
-        });
-
-        function updateJoystick(touch) {
-            const rect = joyBase.getBoundingClientRect();
+        function processCirclePad(touch, baseEl, knobEl, vectorObj) {
+            const rect = baseEl.getBoundingClientRect();
             const centerX = rect.left + rect.width / 2;
             const centerY = rect.top + rect.height / 2;
             let dx = touch.clientX - centerX;
@@ -1078,10 +1103,62 @@
                 dy = (dy / dist) * maxR;
             }
 
-            joyStick.style.transform = `translate(${dx}px, ${dy}px)`;
-            joyVector.x = dx / maxR;
-            joyVector.y = dy / maxR;
+            knobEl.style.transform = `translate(${dx}px, ${dy}px)`;
+            vectorObj.x = dx / maxR;
+            vectorObj.y = dy / maxR;
         }
+
+        window.addEventListener('touchstart', e => {
+            if (selectedMode !== 'mobile' || !gameActive || isPaused) return;
+
+            for (let i = 0; i < e.changedTouches.length; i++) {
+                const t = e.changedTouches[i];
+                const moveRect = moveJoyBase.getBoundingClientRect();
+                const shootRect = shootJoyBase.getBoundingClientRect();
+
+                // Left Circle Pad: Strict boundary check
+                if (Math.hypot(t.clientX - (moveRect.left + moveRect.width/2), t.clientY - (moveRect.top + moveRect.height/2)) <= moveRect.width && moveTouchId === null) {
+                    moveTouchId = t.identifier;
+                    processCirclePad(t, moveJoyBase, moveJoyKnob, moveJoyVector);
+                }
+                // Right Circle Pad: Strict right-side boundary check
+                else if (t.clientX >= window.innerWidth / 2 && shootTouchId === null) {
+                    if (Math.hypot(t.clientX - (shootRect.left + shootRect.width/2), t.clientY - (shootRect.top + shootRect.height/2)) <= shootRect.width * 1.5) {
+                        shootTouchId = t.identifier;
+                        processCirclePad(t, shootJoyBase, shootJoyKnob, shootJoyVector);
+                    }
+                }
+            }
+        });
+
+        window.addEventListener('touchmove', e => {
+            if (selectedMode !== 'mobile' || !gameActive || isPaused) return;
+
+            for (let i = 0; i < e.changedTouches.length; i++) {
+                const t = e.changedTouches[i];
+                if (t.identifier === moveTouchId) {
+                    processCirclePad(t, moveJoyBase, moveJoyKnob, moveJoyVector);
+                } else if (t.identifier === shootTouchId) {
+                    processCirclePad(t, shootJoyBase, shootJoyKnob, shootJoyVector);
+                }
+            }
+        });
+
+        window.addEventListener('touchend', e => {
+            for (let i = 0; i < e.changedTouches.length; i++) {
+                const t = e.changedTouches[i];
+                if (t.identifier === moveTouchId) {
+                    moveTouchId = null;
+                    moveJoyVector = { x: 0, y: 0 };
+                    moveJoyKnob.style.transform = `translate(0px, 0px)`;
+                }
+                if (t.identifier === shootTouchId) {
+                    shootTouchId = null;
+                    shootJoyVector = { x: 0, y: 0 };
+                    shootJoyKnob.style.transform = `translate(0px, 0px)`;
+                }
+            }
+        });
 
         // Gyroscope Control Setup
         btnGyroToggle.addEventListener('click', () => {
@@ -1102,14 +1179,12 @@
 
         window.addEventListener('deviceorientation', e => {
             if (selectedMode === 'mobile' && gyroEnabled) {
-                // Calculate device tilt angle for aiming
-                const gamma = e.gamma || 0; // Left to right tilt [-90,90]
-                const beta = e.beta || 0;   // Front to back tilt [-180,180]
+                const gamma = e.gamma || 0;
+                const beta = e.beta || 0;
                 gyroAngleOffset = Math.atan2(beta, gamma);
             }
         });
 
-        // Touch buttons triggers
         document.getElementById('btn-touch-bomb').addEventListener('touchstart', (e) => {
             e.stopPropagation();
             if (gameActive && !isPaused) player.dropBomb();
